@@ -1,0 +1,177 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Icon from '../components/Icon.astro';
+import Photo from '../components/Photo.astro';
+import Climb from '../components/Climb.astro';
+import Reserve from '../components/Reserve.astro';
+import { photos } from '../lib/photos';
+import { cards, faq, parts, specs } from '../lib/content';
+import { bike, brl, gaugeMax, modes, range, routes } from '../lib/model';
+
+const heroSizes = '100vw';
+// The hero is the page's LCP: a 780 w step serves a 390 px phone at DPR 2 without jumping to 960.
+const heroWidths = [480, 780, 960, 1440, 1920, 2400];
+const heroQuality = 64;
+const heroPreload = await getImage({ src: photos.hero.src, widths: heroWidths, sizes: heroSizes, format: 'webp', quality: heroQuality });
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Product',
+  name: bike.name,
+  description: 'A city e-bike for hilly Brazilian cities: 85 Nm rear motor, 540 Wh battery, 23.5 kg. An invented product.',
+  brand: { '@type': 'Brand', name: 'Ladeira' },
+  offers: { '@type': 'Offer', price: bike.price, priceCurrency: 'BRL', availability: 'https://schema.org/PreOrder', url: 'https://ladeira.pages.dev/#reserve' },
+};
+---
+<Base title="Ladeira L1 · The e-bike for cities built on hills" description="Ladeira L1 climbs an 18% street seated: 85 Nm, 540 Wh, 23.5 kg. Reserve yours for a refundable R$ 300, first batch March 2027 in Belo Horizonte.">
+  <Fragment slot="head">
+    <link rel="preload" as="image" type="image/webp" imagesrcset={heroPreload.srcSet.attribute} imagesizes={heroSizes} fetchpriority="high" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </Fragment>
+
+  <Header />
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-h">
+      <div class="photo" data-hero-photo><Photo name="hero" sizes={heroSizes} widths={heroWidths} quality={heroQuality} eager /></div>
+      <div class="hero-shade"></div>
+      <h1 id="hero-h" class="hero-model"><span class="sr-only">Ladeira L1</span><span data-hero-model aria-hidden="true">L1</span></h1>
+      <div class="hero-intro" data-hero-intro><p>Belo Horizonte is built on hills. This is the e-bike that flattens them.</p><a href="#statement"><span><Icon name="arrow" size={18} /></span>Explore</a></div>
+      <a class="hero-reserve" href="#reserve" data-hero-reserve>Reserve now for R$ 300 <i></i></a>
+    </section>
+
+    <section class="statement" id="statement" aria-label="Why Ladeira">
+      <div class="wrap"><p data-statement>Every commute in Belo Horizonte ends on a hill. Ladeira L1 gives you 85 Nm on the steepest street, so you arrive at the top the way you left the bottom: dry, on time, and with the motor doing what your legs used to.</p></div>
+    </section>
+
+    <section class="perf" aria-labelledby="perf-h">
+      <div class="photo"><Photo name="perf" sizes="100vw" /></div>
+      <div class="perf-shade"></div>
+      <div class="wrap">
+        <h2 id="perf-h" class="sr-only">Performance</h2>
+        <dl class="perf-numbers">
+          <div><dt class="sr-only">Torque, rear hub</dt><dd><b data-to="85">85<small>Nm</small></b><span aria-hidden="true">Torque, rear hub</span></dd></div>
+          <div><dt class="sr-only">Climbs it seated</dt><dd><b data-to="18">18<small>%</small></b><span aria-hidden="true">Climbs it seated</span></dd></div>
+          <div><dt class="sr-only">Range in Eco</dt><dd><b data-to="110">110<small>km</small></b><span aria-hidden="true">Range in Eco</span></dd></div>
+          <div><dt class="sr-only">With the battery in</dt><dd><b data-to="23.5">23.5<small>kg</small></b><span aria-hidden="true">With the battery in</span></dd></div>
+        </dl>
+        <div class="perf-cap"><p>Torque sensor, five assist levels and a 540 Wh battery that comes out with a key.</p><a class="btn ghost" href="#specs">All specs</a></div>
+      </div>
+    </section>
+
+    <Climb />
+
+    <section class="sec" id="bike" aria-labelledby="cards-h">
+      <div class="wrap cards-head">
+        <h2 id="cards-h" class="disp" data-split>Get to know <em>L1</em>.</h2>
+        <div class="arrows"><button type="button" data-cards-prev aria-label="Previous cards"><Icon name="back" size={18} /></button><button type="button" data-cards-next aria-label="Next cards"><Icon name="arrow" size={18} /></button></div>
+      </div>
+      <ul class="cards" data-cards>
+        {cards.map((c, i) => (
+          <li class="card">
+            <Photo name={c.photo as keyof typeof photos} sizes="(max-width: 1023px) 82vw, 400px" widths={[400, 800]} alt="" />
+            <button type="button" class="plus" aria-expanded="false" aria-controls={`card-p-${i}`} aria-label={`More about ${c.title.toLowerCase()}`}><Icon name="plus" size={18} /></button>
+            <div class="cap"><h3>{c.title}</h3><p id={`card-p-${i}`}>{c.text}</p></div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="sec flush" aria-labelledby="anatomy-h">
+      <div class="wrap">
+        <div class="sec-h"><h2 id="anatomy-h" class="disp" data-split>Every part, <em>for a hill</em>.</h2><p>Tap a point on the bike, or pick from the list.</p></div>
+        <div class="anatomy" data-anatomy>
+          <div class="hot-stage">
+            <Photo name="side" sizes="(max-width: 1023px) 100vw, 860px" widths={[640, 960, 1720]} />
+            {parts.map((p, i) => (
+              <button type="button" class:list={['hot', { on: i === 0 }]} data-hot={p.id} style={`left:${p.x}%;top:${p.y}%`} aria-label={`${i + 1}. ${p.title}`} aria-pressed={i === 0 ? 'true' : 'false'}><span>{i + 1}</span></button>
+            ))}
+          </div>
+          <div class="part-panel">
+            {parts.map((p, i) => (
+              <div class="part-detail" data-detail={p.id} hidden={i !== 0}>
+                <span class="num count">{String(i + 1).padStart(2, '0')} / {String(parts.length).padStart(2, '0')}</span>
+                <h3>{p.title}</h3>
+                <p>{p.text}</p>
+              </div>
+            ))}
+            <div class="part-list" role="group" aria-label="Parts">
+              {parts.map((p, i) => <button type="button" data-part={p.id} aria-pressed={i === 0 ? 'true' : 'false'}><span class="n" aria-hidden="true">{i + 1}</span>{p.title}</button>)}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec flush" id="range" aria-labelledby="range-h">
+      <div class="wrap">
+        <div class="sec-h"><h2 id="range-h" class="disp" data-split>Range, <em>your numbers</em>.</h2><p>540 Wh in the down tube. How far it goes depends on the mode, the hills and the weight it carries. Set yours.</p></div>
+        <div class="range-grid" data-range>
+          <div class="panel">
+            <div class="field"><span id="mode-l">Assist mode</span><div class="seg" role="group" aria-labelledby="mode-l" data-seg="mode">{Object.entries(modes).map(([k, [n]]) => <button type="button" data-v={k} aria-pressed={k === 'tour' ? 'true' : 'false'}>{n}</button>)}</div></div>
+            <div class="field"><span id="route-l">Your route</span><div class="seg" role="group" aria-labelledby="route-l" data-seg="route">{Object.entries(routes).map(([k, [n]]) => <button type="button" data-v={k} aria-pressed={k === 'rolling' ? 'true' : 'false'}>{n}</button>)}</div></div>
+            <div class="field"><span id="kg-l">You plus what you carry</span><div class="slider"><input type="range" min="50" max="130" step="1" value="75" data-kg aria-labelledby="kg-l" /><output class="num" data-kg-out>75 kg</output></div></div>
+          </div>
+          <div class="panel range-out" aria-live="polite">
+            <div><b data-range-km>{range('tour', 'rolling', 75)}<small>km</small></b><p class="range-note" data-range-note></p></div>
+            <div class="road-gauge" aria-hidden="true"><i data-gauge></i><div class="ticks num"><span>0</span><span>{gaugeMax / 2}</span><span>{gaugeMax} km</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec flush" aria-labelledby="life-h">
+      <div class="wrap life">
+        <div class="photo" data-reveal><Photo name="life" sizes="(max-width: 1023px) 100vw, 740px" widths={[640, 960, 1480]} /></div>
+        <div><h2 id="life-h" class="disp" data-split>Arrive like you took <em>the bus</em>.</h2><p>No sweat at the top of the hill and no shower at work. The step-through frame means skirts, suits and short legs all get on the same way.</p></div>
+      </div>
+    </section>
+
+    <section class="sec flush" id="specs" aria-labelledby="specs-h">
+      <div class="wrap">
+        <div class="sec-h"><h2 id="specs-h" class="disp" data-split>Specs</h2><p>Ladeira L1, first batch. Final numbers are confirmed before deliveries start.</p></div>
+        <div class="specs-grid">
+          <div class="photo" data-reveal><Photo name="specs" sizes="(max-width: 1023px) 100vw, 520px" widths={[640, 1040]} /></div>
+          <div data-specs>
+            {specs.map(([g, rows], i) => (
+              <details class="spec-g" open data-keep-open={i < 2 ? '' : undefined}>
+                <summary>{g}<Icon name="chevron" size={22} /></summary>
+                <table><tbody>{rows.map(([k, v]) => <tr><th scope="row">{k}</th><td>{v}</td></tr>)}</tbody></table>
+              </details>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <Reserve />
+
+    <section class="sec" id="faq" aria-labelledby="faq-h">
+      <div class="wrap faq-grid">
+        <div><h2 id="faq-h" class="disp" data-split>Questions</h2><p>Anything else, write to us. A person in Belo Horizonte answers.</p></div>
+        <div>{faq.map(([q, a]) => <details class="q"><summary>{q}<Icon name="plus" size={22} /></summary><p>{a}</p></details>)}</div>
+      </div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-h">
+      <div class="photo"><Photo name="cta" sizes="100vw" /></div>
+      <div class="cta-shade"></div>
+      <div class="wrap cta-inner">
+        <h2 id="cta-h" class="disp" data-split>Your hill is <em>waiting</em>.</h2>
+        <div class="cta-side"><p>First batch: March 2027 in Belo Horizonte. R$ 300 holds your bike, and you can cancel for a full refund until delivery.</p><a class="btn primary" href="#reserve">Reserve L1</a></div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+
+  <aside class="buybar" data-buybar aria-label="Reserve L1">
+    <div class="wrap"><span class="model">L1</span><dl><div><dt>From</dt><dd class="num">{brl(bike.price)}</dd></div><div><dt>Reserve</dt><dd class="num">{brl(bike.deposit)}</dd></div><div><dt>Delivery</dt><dd>{bike.firstDeliveries}</dd></div></dl><a class="btn primary" href="#reserve" tabindex="-1" data-buybar-btn>Reserve</a></div>
+  </aside>
+
+  <script>
+    import '../scripts/main';
+  </script>
+</Base>

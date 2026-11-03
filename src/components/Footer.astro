@@ -1,0 +1,28 @@
+---
+import Icon from './Icon.astro';
+import Mark from './Mark.astro';
+---
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <form class="news" data-news novalidate>
+        <label for="news-email">One email a month: test rides, delivery dates, new streets climbed.</label>
+        <div class="news-row"><input id="news-email" type="email" placeholder="Your email" autocomplete="email" aria-describedby="news-msg" /><button type="submit" aria-label="Sign up"><Icon name="arrow" size={22} /></button></div>
+        <p id="news-msg" class="news-msg" data-news-msg aria-live="polite"></p>
+      </form>
+      <ul class="models" aria-label="Models">
+        <li><span class="num">L1</span><b>Crossbar</b><a href="#reserve">Reserve now</a></li>
+        <li><span class="num">L1</span><b>Step-through</b><a href="#reserve">Reserve now</a></li>
+        <li><span class="num">BH</span><b>Test ride, Savassi</b><span class="soon">From Jan 2027</span></li>
+      </ul>
+    </div>
+    <div class="foot-cols">
+      <div class="foot-brand"><Mark size={32} /><p>Ladeira makes e-bikes for cities built on hills. Designed in Belo Horizonte.</p></div>
+      <nav aria-label="Ride"><h3>Ride</h3><a href="/#climb">The climb</a><a href="/#bike">The bike</a><a href="/#range">Range</a><a href="/#specs">Specs</a></nav>
+      <nav aria-label="Support"><h3>Support</h3><a href="/#faq">FAQ</a><a href="/#faq">Service at home</a><a href="/#specs">Warranty</a><a href="/#faq">Contact</a></nav>
+      <div class="follow"><h3>Follow</h3><span>Instagram</span><span>YouTube</span><span>Strava club</span><span class="soon">Opening with the first batch</span></div>
+    </div>
+    <svg class="wordmark" data-wordmark viewBox="0 0 1280 196" role="img" aria-label="Ladeira"><text x="0" y="190">LADEIRA</text></svg>
+    <div class="foot-legal"><span>© 2026 Ladeira · an invented product for a portfolio</span><span>Photos: <a href="https://unsplash.com/@kbobike">KBO Bike on Unsplash</a>, logo retouched</span><span>Prices in BRL, mocked checkout</span></div>
+  </div>
+</footer>

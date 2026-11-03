@@ -1,0 +1,31 @@
+// Ladeira's icon set: a 24-unit grid, 1.75 stroke, round caps and joins, currentColor only.
+export const iconPaths = {
+  motor: '<circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2.5"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>',
+  battery: '<rect x="3" y="7" width="16" height="10" rx="2"/><path d="M21 10v4"/><path d="M10 9l-2 3h4l-2 3"/>',
+  range: '<path d="M4 18a8 8 0 1 1 16 0"/><path d="M12 18l4-6"/><circle cx="12" cy="18" r="1.2"/>',
+  climb: '<path d="M3 20h18L21 6z"/><path d="M8 20l4-4"/>',
+  charge: '<path d="M9 3v4M15 3v4"/><rect x="6" y="7" width="12" height="6" rx="2"/><path d="M12 13v3a3 3 0 0 1-3 3H7"/>',
+  brake: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M17 5.5l2.5-2.5"/>',
+  light: '<path d="M4 9h6l3-3v12l-3-3H4z"/><path d="M16 9l4-2M16 12h5M16 15l4 2"/>',
+  lock: '<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/><path d="M12 15v2"/>',
+  rack: '<path d="M3 10h18"/><path d="M6 10l-2 9M18 10l2 9"/><rect x="7" y="4" width="10" height="6" rx="1.5"/>',
+  seat: '<path d="M6 8h9a3 3 0 0 1 3 3v2H8z"/><path d="M8 13l-1 7M16 13l1 7"/><path d="M6 8V5"/>',
+  gears: '<circle cx="12" cy="12" r="8"/><path d="M12 4v4M12 16v4M4 12h4M16 12h4"/><circle cx="12" cy="12" r="1.5"/>',
+  weight: '<path d="M7 8h10l3 12H4z"/><circle cx="12" cy="5" r="2"/>',
+  size: '<path d="M4 20L20 4"/><path d="M8 20l-4 0 0-4M16 4h4v4"/>',
+  shield: '<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
+  pin: '<path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/>',
+  wrench: '<path d="M14 6a4 4 0 0 0 5 5l-9 9a2 2 0 0 1-3-3l9-9a4 4 0 0 1-2-2z"/>',
+  calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>',
+  check: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  back: '<path d="M19 12H5M11 6l-6 6 6 6"/>',
+  up: '<path d="M12 19V5M6 11l6-6 6 6"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  minus: '<path d="M5 12h14"/>',
+  chevron: '<path d="M6 9l6 6 6-6"/>',
+  alert: '<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+} as const;
+
+export type IconName = keyof typeof iconPaths;

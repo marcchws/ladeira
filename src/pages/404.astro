@@ -1,0 +1,20 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Mark from '../components/Mark.astro';
+import Scene from '../components/Scene.astro';
+---
+<Base title="Road closed · Ladeira" description="This page doesn't exist. The road back to Ladeira L1 is open." noindex>
+  <header class="nav stuck" style="top:12px">
+    <span></span>
+    <a class="brand" href="/" aria-label="Ladeira, home"><Mark /><span class="word disp">Ladeira</span></a>
+    <a class="btn primary" href="/#reserve">Reserve</a>
+  </header>
+  <main class="wrap lost">
+    <Scene name="works" width={360} />
+    <span class="code"><Icon name="alert" size={16} />404 · Road closed</span>
+    <h1 class="disp">This street doesn't go <em>anywhere</em>.</h1>
+    <p>The page you followed isn't here, or it moved. The way back is downhill from here.</p>
+    <a class="btn primary" href="/" style="justify-self:start"><Icon name="up" size={18} />Back to the top</a>
+  </main>
+</Base>

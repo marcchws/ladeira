@@ -1,0 +1,77 @@
+---
+import Icon from './Icon.astro';
+import Photo from './Photo.astro';
+import Scene from './Scene.astro';
+import { bike, brl, extras, frames, heightMax, heightMin, reservationCode, sizes } from '../lib/model';
+
+const startHeight = 174;
+---
+<section class="sec reserve-sec" id="reserve" aria-labelledby="reserve-h">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2 id="reserve-h" class="disp" data-split>Reserve <em>L1</em>.</h2>
+      <p>R$ 300 holds your frame and size in the first batch. You pay the rest when your bike is ready, from March 2027 in Belo Horizonte.</p>
+    </div>
+    <div class="config" data-config>
+      <div class="config-stage">
+        <Photo name="side" data-stage="crossbar" sizes="(max-width: 1023px) 100vw, 760px" widths={[640, 960, 1520]} alt="Ladeira L1, crossbar frame in Graphite" />
+        <Photo name="step" data-stage="step" sizes="(max-width: 1023px) 100vw, 760px" widths={[640, 960, 1520]} alt="" style="opacity:0" />
+        <div class="cap"><span data-config-cap>Crossbar · Graphite · size M</span><span class="num" data-config-price>{brl(bike.price)}</span></div>
+      </div>
+
+      <div class="panel">
+        <form data-view="form" novalidate>
+          <fieldset class="field">
+            <legend>Frame</legend>
+            <div class="frames">
+              {Object.entries(frames).map(([k, f], i) => (
+                <button type="button" class="frame" data-frame={k} aria-pressed={i === 0 ? 'true' : 'false'}>{f.name}<span>{f.paint} · {f.why}</span></button>
+              ))}
+            </div>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Your height</legend>
+            <div class="slider"><input type="range" min={heightMin} max={heightMax} value={startHeight} data-height aria-label="Your height in centimetres" /><output class="num" data-height-out>{startHeight} cm</output></div>
+            <div class="seg" data-size role="group" aria-label="Frame size">
+              {sizes.map(([s, lo, hi]) => <button type="button" data-v={s} aria-pressed={s === 'M' ? 'true' : 'false'}>{s} <span class="num">{lo}–{hi}</span></button>)}
+            </div>
+            <p class="hint" data-hint aria-live="polite">At {startHeight} cm we suggest M.</p>
+          </fieldset>
+          <fieldset class="field">
+            <legend>Add to it</legend>
+            <div>
+              {extras.map((e) => (
+                <label class="extra"><input type="checkbox" data-extra={e.id} /><span><Icon name={e.icon} />{e.name}</span><span class="num">{brl(e.price)}</span></label>
+              ))}
+            </div>
+          </fieldset>
+          <div class="summary">
+            <div class="row"><span>Ladeira L1</span><span class="num">{brl(bike.price)}</span></div>
+            <div class="row" data-extras-row hidden><span>Extras</span><span class="num" data-extras-total></span></div>
+            <div class="row total"><span>Total at delivery</span><span class="num" data-total>{brl(bike.price)}</span></div>
+            <div class="row due"><span>Due today, refundable</span><span class="num">{brl(bike.deposit)}</span></div>
+          </div>
+          <button type="submit" class="btn primary reserve-btn" data-reserve><span data-reserve-label>Reserve for {brl(bike.deposit)}</span></button>
+          <p class="fine">Pix or card. Cancel any time before delivery for a full refund.</p>
+        </form>
+
+        <div class="result" data-view="done" role="status" hidden>
+          <Scene name="top" />
+          <span class="status"><Icon name="check" size={16} />Reserved · {reservationCode}</span>
+          <h3 class="disp" tabindex="-1">You're in the first batch.</h3>
+          <p data-done-summary></p>
+          <p>Deliveries start in March 2027 in Belo Horizonte. You can cancel any time until then for a full refund.</p>
+          <button type="button" class="btn" data-again>Reserve another</button>
+        </div>
+
+        <div class="result failed" data-view="failed" role="alert" hidden>
+          <Scene name="works" />
+          <span class="status"><Icon name="alert" size={16} />Not reserved</span>
+          <h3 class="disp" tabindex="-1">The payment didn't go through.</h3>
+          <p>Your card wasn't charged and your choices are kept. Check the card details, or try another card or Pix.</p>
+          <div class="actions"><button type="button" class="btn primary" data-retry>Try again</button><button type="button" class="btn" data-back>Change my choices</button></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

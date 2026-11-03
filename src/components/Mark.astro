@@ -1,0 +1,10 @@
+---
+// The symbol: a street rising at 18% inside a rounded lime tile, with a dot at the top.
+interface Props { size?: number }
+const { size = 28 } = Astro.props;
+---
+<svg class="mark" width={size} height={size} viewBox="0 0 40 40" aria-hidden="true">
+  <rect width="40" height="40" rx="10" fill="var(--accent)" />
+  <path d="M8 29h7l17-12" fill="none" stroke="var(--on-accent)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="31" cy="11" r="2.6" fill="var(--on-accent)" />
+</svg>

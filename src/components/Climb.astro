@@ -1,0 +1,45 @@
+---
+import { Y0, exaggeration, groundPath, roadPath, segmentMarks, riseLabel, X0 } from '../lib/climb-drawing';
+import { length, rise, street } from '../lib/model';
+---
+<section class="climb" id="climb" aria-labelledby="climb-h" data-climb>
+  <div class="wrap">
+    <div class="climb-h">
+      <h2 id="climb-h" class="disp" data-split>0 → {Math.round(rise)}&nbsp;m in <em>{length}&nbsp;m</em>.</h2>
+      <p>{street.name} at 12 km/h. Scroll to climb it and watch how the work splits between your legs and the motor.</p>
+    </div>
+    <div class="sheet">
+      <span class="sheet-cap">{street.name} · height × {exaggeration}</span>
+      <svg class="profile" viewBox="0 0 1000 420" role="img" aria-label={`Elevation profile of ${street.name}: ${length} m long, ${Math.round(rise)} m of rise, grades of ${segmentMarks.map((s) => s.grade + '%').join(', ')}. Height drawn ${exaggeration} times its scale.`}>
+        <path class="ground" d={groundPath} />
+        <path class="road" d={roadPath} />
+        <path class="done" d={roadPath} data-done />
+        {segmentMarks.map((s, i) => <>
+          <line class="tick" x1={s.x} y1={s.y} x2={s.x} y2={Y0 + 30} />
+          <text class:list={['seg-label', { on: i === 0 }]} data-seg-i={i} x={s.midX} y={Y0 + 52} text-anchor="middle">{s.grade}%</text>
+        </>)}
+        <text x={X0} y={Y0 + 52} class="seg-label zero">0 m</text>
+        <text x={riseLabel.x} y={riseLabel.y} class="seg-label" text-anchor="end">{riseLabel.text}</text>
+        <g class="rider" data-rider transform={`translate(${X0} ${Y0})`}>
+          <path class="bat" d="M-6 -16 L6 -26" />
+          <circle cx="-16" cy="-14" r="13" />
+          <circle cx="16" cy="-14" r="13" />
+          <path d="M-16 -14 L-4 -14 L-8 -30 M-4 -14 L10 -30 L16 -14 M10 -30 L12 -36 L6 -38 M-8 -30 L-12 -34 M-15 -34 h8" />
+        </g>
+      </svg>
+    </div>
+    <div>
+      <div class="hud" data-hud aria-live="polite">
+        <div><b class="big" data-h="grade">4%</b><span>Grade</span></div>
+        <div><b class="num" data-h="dist">0 m</b><span>Along the street</span></div>
+        <div><b class="num" data-h="up">+0 m</b><span>Climbed</span></div>
+        <div><b class="num" data-h="legs">120 W</b><span>Your legs</span></div>
+        <div class="effort">
+          <div class="effort-bar" aria-hidden="true"><span class="legs" data-h="legs-bar"></span><span class="motor" data-h="motor-bar"></span></div>
+          <div class="effort-keys"><span><i style="background:var(--ink)"></i>Legs <span class="num" data-h="legs-key">120 W</span></span><span><i style="background:var(--accent)"></i>Motor <span class="num" data-h="motor-key">0 W</span></span><span>12 km/h, 75 kg rider</span></div>
+        </div>
+      </div>
+      <label class="scrub"><span>Ride it</span><input type="range" min="0" max={length} step="5" value="0" data-scrub aria-label={`Distance along ${street.name}, in metres`} /><output class="num" data-scrub-out>0 m</output></label>
+    </div>
+  </div>
+</section>

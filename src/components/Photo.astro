@@ -1,0 +1,27 @@
+---
+import { Image } from 'astro:assets';
+import { photos, type PhotoKey } from '../lib/photos';
+
+interface Props {
+  name: PhotoKey;
+  sizes: string;
+  widths?: number[];
+  eager?: boolean;
+  alt?: string;
+  quality?: number;
+  [attr: string]: unknown;
+}
+const { name, sizes, widths = [640, 960, 1440, 1920, 2400], eager = false, alt, quality = 78, ...rest } = Astro.props;
+const p = photos[name];
+---
+<Image
+  src={p.src}
+  alt={alt ?? p.alt}
+  widths={widths}
+  sizes={sizes}
+  format="webp"
+  quality={quality}
+  loading={eager ? 'eager' : 'lazy'}
+  fetchpriority={eager ? 'high' : undefined}
+  {...rest}
+/>

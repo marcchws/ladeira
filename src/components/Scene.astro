@@ -1,0 +1,20 @@
+---
+// Every illustration is the symbol's street line, and one thing on it tells the state:
+// a flag at the top for a reservation done, a cone with the road cut for something that failed.
+interface Props { name: 'top' | 'works'; width?: number }
+const { name, width = 200 } = Astro.props;
+const label = name === 'top' ? 'At the top' : 'Road works';
+---
+<svg class:list={['scene', `scene-${name}`]} viewBox="0 0 180 112" width={width} role="img" aria-label={label}>
+  <line x1="6" y1="104" x2="174" y2="104" class="s-ground" />
+  <path d="M12 98h52l64-46h40" class="s-road" />
+  {name === 'top' && <>
+    <path d="M168 52V20l20 7-20 7" class="s-accent" />
+    <circle cx="148" cy="44" r="9" class="s-accent" />
+  </>}
+  {name === 'works' && <>
+    <path d="M96 75l12-28 12 28z" class="s-cone" />
+    <path d="M100 66h16" class="s-cut" />
+    <path d="M60 96l14-10M134 54l14-10" class="s-cut" />
+  </>}
+</svg>
